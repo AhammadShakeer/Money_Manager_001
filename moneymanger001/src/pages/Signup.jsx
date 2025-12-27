@@ -44,7 +44,7 @@ const Signup = () => {
             setIsLoading(false);
             return;
         }
-
+      //  console.log(fullName,email,password);
         setError("");
 
         //signup api call
