@@ -1,5 +1,17 @@
+# ---------- BUILD STAGE ----------
+FROM maven:3.9.6-eclipse-temurin-21 AS build
+WORKDIR /build
+
+COPY pom.xml .
+COPY src ./src
+
+RUN mvn clean package -DskipTests
+
+# ---------- RUNTIME STAGE ----------
 FROM eclipse-temurin:21-jre
 WORKDIR /app
-COPY target/MoneyManager-1.0.0.jar moneymanager.jar
+
+COPY --from=build /build/target/*.jar app.jar
+
 EXPOSE 9080
-ENTRYPOINT ["java", "-jar", "moneymanager.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
